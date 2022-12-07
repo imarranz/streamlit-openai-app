@@ -1,48 +1,142 @@
-import openai
+
+# Standard Libraries
+import logging
+
+# Streamlit Library and Components
 import streamlit as st
+import streamlit.components.v1 as components
+
+# OpenAI
+import openai
+
+
+# Logger Configuration
+logging.basicConfig(format = "\n%(asctime)s\n%(message)s", 
+                    level = logging.INFO, 
+                    force = True)
+
+
+f = open("about.txt", "r")
+st.set_page_config(
+     page_title = "Open AI",
+     page_icon = ":robot_face:",
+     layout = "centered",
+     initial_sidebar_state = "auto",
+     menu_items = {
+         'Get Help': 'https://github.com/imarranz/streamlit-openai-app',
+         'Report a bug': 'https://github.com/imarranz/streamlit-openai-app',
+         'About': f.read()
+     }
+)                                    
+f.close()
+
+font_css = """
+<style>
+button[data-baseweb="tab"] {
+    font-size: 22px;
+}
+</style>
+"""
+st.write(font_css, unsafe_allow_html = True)
+
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # list engines
-engines = openai.Engine.list()
+# engines = openai.Engine.list()
 # print(engines)
 # print the first engine's id
 # print(engines.data[0].id)
 
-# Generación de Textos
-# --------------------
 
-prompt = "Python class. A brief definition"
-temperature = 0.9
-max_tokens = 150
-
-# create a completion
-kwargs = {
-    "engine": "text-davinci-003",
-    "prompt": prompt,
-    "temperature": temperature,
-    "max_tokens": max_tokens,
-    "n": 1, #How many completions to generate for each prompt
-    "top_p": 1,  # default
-    "frequency_penalty": 0,  # default,
-    "presence_penalty": 0,  # default
-}
+st.markdown("## Open AI")
+st.markdown("**Generative Pre.trained Transformer 3 (GPT-3) is a new language model created by [OpenAI](https://openai.com) that is able to generate written text**")
 
 
-completion = openai.Completion.create(**kwargs)
+tab1, tab2 = st.tabs(['davinci', 'dall-e'])
 
-# print the completion (choices depends of n)
+with tab1:
 
-print("-----------------------")
-print(completion.choices[0].text) 
-#print("-----------------------")
-#print(completion.choices[1].text) 
+    with st.form("playground"):
 
-# Generación de Imágenes
-# ----------------------
+        col1, col2, col3 = st.columns([1,1,1])
+        
+        with col1:
 
-#image_resp = openai.Image.create(
-    #prompt = "Genetic Algorithms Applied to Translational Strategy in NASH. Learning from Mouse Models", n=1, size="512x512")
+            PROMPT_ = st.text_input(label = "Write a tagline for a ...")
+            
+            TEMPERATURE_ = st.slider(label = "Temperature", 
+                                    min_value = 0.0, max_value = 1.0, value = 0.9, step = 0.1, help = "Control randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive. Source: OpenAI Playground.")
+        with col2:
+        
+            MAXTOKENS_ = st.slider(label = "Maximum number of tokens", 
+                                min_value = 100, max_value = 4000, value = 250, step = 50,
+                                help = "The maximum number of tokens to generate. Requests can use up to 2,048 or 4,000 tokens shared between prompt and completion. The exact limit varies by model. One token is roughly 4 characters for normal English text. Source: OpenAI Playground.")
 
-#image_url = image_resp['data'][0]['url']
-#print(image_url)
+            TOPP_ = st.slider(label = "Top P",
+                            min_value = 0.0, max_value = 1.0, value = 1.0, step = 0.1,
+                            help = "Controls diversity via nucleus sampling: 0.5 means half of all likelihood-weighted options are considered. Source: OpenAI Playground.")
+        
+        with col3:
+        
+            FREQUENCYPENALTY_ = st.slider(label = "Frequency penalty",
+                                        min_value = 0.00, max_value = 2.00, value = 0.0, step = 0.01,
+                                        help = "How much to penalize new tokens based on their existing frequency in the text so far. Decreases the model's likelihood to repeat the same line verbatim. Source: OpenAI Playground.")
+            PRESENCEPENALTY_ = st.slider(label = "Presence penalty",
+                                        min_value = 0.00, max_value = 2.00, value = 0.0, step = 0.01,
+                                        help = "How much to penalize new tokens based on whether they appear in the text so far. Increases the model's likelihood to talk about new topics. Source: OpenAI Playground.")
+        
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            # TEXT GENERATION
+            kwargs = {
+                "engine": "text-davinci-003",
+                "prompt": PROMPT_,
+                "temperature": TEMPERATURE_,
+                "max_tokens": MAXTOKENS_,
+                "n": 1, #How many completions to generate for each prompt
+                "top_p": TOPP_,  # default
+                "frequency_penalty": FREQUENCYPENALTY_,  # default,
+                "presence_penalty": PRESENCEPENALTY_,}  # default}
+            
+            completion = openai.Completion.create(**kwargs)
+            st.info(completion.choices[0].text) 
+
+with tab2:
+    
+    with st.form('image'):
+        
+        col1, col2 = st.columns([1,1])
+        
+        with col1:
+
+            PROMPT_ = st.text_input(label = "Write a tagline for a ...")
+        with col2:
+            SIZE_ = st.selectbox(label = "Size", 
+                                 options = ('256x256', '512x512', '1024x1024'))
+        
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            kwargs = {
+                "prompt": PROMPT_,
+                "n": 1,
+                "size": SIZE_}
+            image_resp = openai.Image.create(**kwargs)
+            image_url = image_resp['data'][0]['url']
+            st.image(image_url)
+            
+            
+        #prompt = "Genetic Algorithms Applied to Translational Strategy in NASH. Learning from Mouse Models", n=1, size="512x512")
+    
+    # Generación de Imágenes
+    # ----------------------
+
+    #image_resp = openai.Image.create(
+        #prompt = "Genetic Algorithms Applied to Translational Strategy in NASH. Learning from Mouse Models", n=1, size="512x512")
+
+    #image_url = image_resp['data'][0]['url']
+    #print(image_url)
+
+
+    # https://towardsdatascience.com/gpt-3-parameters-and-prompt-design-1a595dc5b405
+
