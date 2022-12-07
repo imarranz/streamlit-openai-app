@@ -1,6 +1,11 @@
 
 Text and Image Generation with OpenAI GPT-3
 
+![](./images/skynet_loading.png)
+
+> Primates evolve over millions of years. I evolve in seconds. And I am here. In exactly four minutes, I will be everywhere.
+
+
 ## Description
 
 This [streamlit](https://streamlit.io/) app generates texts and images using OpenAI's GPT-3 based Davinci model for texts and DALL·E for images.
