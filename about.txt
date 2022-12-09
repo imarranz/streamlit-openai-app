@@ -1,5 +1,5 @@
 ## OPEN AI
 
-**Open AI**  
+**Streamlit OpenAI App** is a web application developed using OpenAI's GPT-3 language model and developed in Python with Streamlit. It allows users to generate text and images simply by typing in a query. Using OpenAI's advanced artificial intelligence technology. **Streamlit OpenAI App** is an ideal tool for anyone looking to experiment with open-source AI technology and create novel content.
 # :robot_face:
 
