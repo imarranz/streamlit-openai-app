@@ -117,9 +117,11 @@ with tab2:
         col1, col2 = st.columns([1,1], gap = "medium")
         
         with col1:
-
+            
+            
             PROMPT_ = st.text_input(label = "Write a tagline for a ...")
         with col2:
+            
             SIZE_ = st.selectbox(label = "Size", 
                                  options = ('256x256', '512x512', '1024x1024'))
         
