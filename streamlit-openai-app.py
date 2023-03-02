@@ -1,4 +1,6 @@
 
+# https://platform.openai.com/docs/introduction
+
 # Standard Libraries
 import logging
 
@@ -53,7 +55,7 @@ st.markdown("## Open AI")
 st.markdown("**Generative Pre.trained Transformer 3 (GPT-3) is a new language model created by [OpenAI](https://openai.com) that is able to generate written text**")
 
 
-tab1, tab2 = st.tabs(['davinci', 'dall-e'])
+tab1, tab2, tab3, tab4 = st.tabs(['davinci', 'dall-e', 'ChatGPT', 'Sources'])
 
 with tab1:
 
@@ -162,3 +164,36 @@ with tab2:
 
     # https://towardsdatascience.com/gpt-3-parameters-and-prompt-design-1a595dc5b405
 
+with tab3:
+    # https://platform.openai.com/docs/guides/chat
+    with st.form('chat'):
+        col1, col2 = st.columns([1,1], gap = "medium")
+            
+        with col1:
+
+            CONTENT_ = st.text_input(label = "Write a tagline for a ...")
+                
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            # TEXT GENERATION
+            kwargs = {
+                "model": "gpt-3.5-turbo",
+                "n": 1,
+                "stop": None,
+                "messages": [{"role": "user", "content": CONTENT_}]
+                }  # default}
+            
+            completion = openai.ChatCompletion.create(**kwargs, )
+            st.info(f"""**Configuration**:  
+                    **model**: gpt-3.5-turbo  
+                    **content**: {CONTENT_}  
+                    **more information**: https://platform.openai.com/docs/guides/chat""")
+            
+            st.success(completion.choices[0].message['content']) 
+            
+with tab4:
+    st.markdown("[openai](https://platform.openai.com/docs/introduction)")
+    st.markdown("[Text Completion](https://platform.openai.com/docs/guides/completion)")
+    st.markdown("[Chat Completion](https://platform.openai.com/docs/guides/chat)")
+    st.markdown("[Image Generation](https://platform.openai.com/docs/guides/images)")
+    st.markdown("[Fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)")
