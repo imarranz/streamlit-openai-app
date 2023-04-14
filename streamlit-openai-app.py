@@ -192,6 +192,9 @@ with tab3:
             st.success(completion.choices[0].message['content']) 
             
 with tab4:
+    
+    st.markdown("## Sources")
+    
     st.markdown("[openai](https://platform.openai.com/docs/introduction)")
     st.markdown("[Text Completion](https://platform.openai.com/docs/guides/completion)")
     st.markdown("[Chat Completion](https://platform.openai.com/docs/guides/chat)")
