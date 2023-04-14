@@ -55,7 +55,7 @@ st.markdown("## Open AI")
 st.markdown("**Generative Pre.trained Transformer 3 (GPT-3) is a new language model created by [OpenAI](https://openai.com) that is able to generate written text**")
 
 
-tab1, tab2, tab3, tab4 = st.tabs(['davinci', 'dall-e', 'ChatGPT', 'Sources'])
+tab1, tab2, tab3, tab4 = st.tabs(['davinci', 'dall-e', 'ChatGPT', 'Resources'])
 
 with tab1:
 
@@ -193,7 +193,9 @@ with tab3:
             
 with tab4:
     
-    st.markdown("## Sources")
+    st.markdown("## Resources")
+    
+    st.markdown("Welcome to our resource section, where you will find a collection of links to various websites and online tools that I have found helpful for various purposes. I will continue to update this section regularly, so be sure to check back often for new additions.")
     
     st.markdown("[openai](https://platform.openai.com/docs/introduction)")
     st.markdown("[Text Completion](https://platform.openai.com/docs/guides/completion)")
