@@ -37,6 +37,19 @@ font_css = """
 button[data-baseweb="tab"] {
     font-size: 22px;
 }
+
+footer {
+    visibility:visible;
+}
+footer:after {
+    content:'@ 2023: Ibon Martínez-Arranz';
+    display:block;
+    position:relative;
+    font-size:14px;
+    color:#FF514B;
+    padding:5px;
+    top:3px;
+}
 </style>
 """
 st.write(font_css, unsafe_allow_html = True)
